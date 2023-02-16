@@ -14,7 +14,7 @@ export const getPosts = (req, res) => {
 
 export const getPost = (req, res) => {
   const q =
-    "SELECT * FROM posts";
+    "SELECT * FROM posts WHERE id=?";
 
   db.query(q, [req.params.id], (err, data) => {
     if (err) return res.status(500).json(err);

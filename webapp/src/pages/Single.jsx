@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 
 const Single = () => {
   const [post, setPost] = useState({});
-  const location = useLocation();
   const navigate = useNavigate();
-  const postId = location.pathname.split("/")[2];
+  const {id} = useParams();
+  console.log(id);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/posts/${postId}`);
+        const res = await axios.get(`/posts/${id}`);
         setPost(res.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchData();
-  }, [postId]);
+  }, [id]);
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/posts/${postId}`);
+      await axios.delete(`/posts/${id}`);
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -46,7 +46,7 @@ const Single = () => {
             <p>Posted {moment(post.date).fromNow()}</p>
           </div>
           <div className="edit">
-            <Link to={`/write?edit=${postId}`} state={post}>
+            <Link to={`/write?edit=${id}`} state={post}>
               <img src={Edit} alt="" />
             </Link>
             <img onClick={handleDelete} src={Delete} alt="" />
