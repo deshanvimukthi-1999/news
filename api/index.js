@@ -2,6 +2,7 @@ import express from "express";
 import postRoutes from "./routes/posts.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
+import fs from "fs";
 
 const app = express();
 
@@ -9,7 +10,11 @@ app.use(express.json());
 app.use(cookieParser());
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../webapp/public/upload");
+    const uploadDir = "../webapp/public/upload";
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);

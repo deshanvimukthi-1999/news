@@ -42,37 +42,93 @@ export const addPost = (req, res) => {
     });
 };
 
+// export const deletePost = (req, res) => {
+
+//     const postId = req.params.id;
+//     const q = "DELETE FROM posts WHERE `id` = ? ";
+
+//     db.query(q, [postId], (err, data) => {
+//       if (err) return res.status(403).json("You can delete only your post!");
+
+//       return res.json("Post has been deleted!");
+//     });
+ 
+// };
 export const deletePost = (req, res) => {
+  const postId = req.params.id;
 
-    const postId = req.params.id;
-    const q = "DELETE FROM posts WHERE `id` = ? ";
+  // Check if post exists
+  const selectQuery = "SELECT * FROM posts WHERE id = ?";
+  db.query(selectQuery, [postId], (selectErr, selectResult) => {
+    if (selectErr) {
+      return res.status(500).json(selectErr);
+    }
+    if (selectResult.length === 0) {
+      return res.status(404).json("Post not found");
+    }
 
-    db.query(q, [postId], (err, data) => {
-      if (err) return res.status(403).json("You can delete only your post!");
-
+    // Delete post
+    const deleteQuery = "DELETE FROM posts WHERE `id` = ?";
+    db.query(deleteQuery, [postId], (deleteErr, deleteResult) => {
+      if (deleteErr) {
+        return res.status(500).json(deleteErr);
+      }
       return res.json("Post has been deleted!");
     });
- 
+  });
 };
 
 
-export const updatePost = (req, res) => {
+
+// export const updatePost = (req, res) => {
  
+//     const postId = req.params.id;
+//     const q =
+//       "UPDATE posts SET `title`=?,`desc`=?,`img`=?,`cat`=? WHERE `id` = ? ";
 
-    const postId = req.params.id;
-    const q =
-      "UPDATE posts SET `title`=?,`desc`=?,`img`=?,`cat`=? WHERE `id` = ? ";
+//     const values = [
+//       req.body.title,
+//       req.body.desc,
+//       req.body.img, 
+//       req.body.cat
+//     ];
 
+//     db.query(q, [...values, postId], (err, data) => {
+//       if (err) return res.status(500).json(err);
+//       return res.json("Post has been updated.");
+//     });
+ 
+// };
+
+export const updatePost = (req, res) => {
+  const postId = req.params.id;
+
+  // Check if post exists
+  const selectQuery = "SELECT * FROM posts WHERE id = ?";
+  db.query(selectQuery, [postId], (selectErr, selectResult) => {
+    if (selectErr) {
+      return res.status(500).json(selectErr);
+    }
+    if (selectResult.length === 0) {
+      return res.status(404).json("Post not found");
+    }
+
+    // Update post
+    const updateQuery =
+      "UPDATE posts SET `title`=?,`desc`=?,`img`=?,`cat`=? WHERE `id` = ?";
     const values = [
       req.body.title,
       req.body.desc,
-      req.body.img, 
-      req.body.cat
+      req.body.img,
+      req.body.cat,
     ];
 
-    db.query(q, [...values, postId], (err, data) => {
-      if (err) return res.status(500).json(err);
+    db.query(updateQuery, [...values, postId], (updateErr, updateResult) => {
+      if (updateErr) {
+        return res.status(500).json(updateErr);
+      }
       return res.json("Post has been updated.");
     });
- 
+  });
 };
+

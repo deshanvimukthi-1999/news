@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Menu from "../components/Menu";
 import axios from "axios";
 import moment from "moment";
 
@@ -63,7 +62,7 @@ const Single = () => {
         </div>
         <h1>{post.title}</h1>
         {getText(post.desc)}  </div>
-      <Menu cat={post.cat}/>
+     
     </div>
   );
 };
