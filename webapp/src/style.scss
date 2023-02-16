@@ -4,7 +4,7 @@ $lightGreen: #b9e7e7;
   display: flex;
   justify-content: center;
   .container {
-    width: 1024px;
+    width: 1224px;
 
     .link {
       text-decoration: none;
@@ -108,16 +108,17 @@ $lightGreen: #b9e7e7;
 
           .content {
             flex: 3;
+            gap: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+    
 
             h1 {
-              font-size: 48px;
+              font-size: 36px;
             }
 
             p {
-              font-size: 18px;
+              font-size: 14px;
             }
 
             button {
@@ -144,6 +145,7 @@ $lightGreen: #b9e7e7;
     //SINGLE
 
     .single {
+      margin-top: 20px;
       display: flex;
       gap: 50px;
 
@@ -155,7 +157,7 @@ $lightGreen: #b9e7e7;
 
         img {
           width: 100%;
-          height: 300px;
+          height: 200px;
           object-fit: cover;
         }
 
@@ -188,13 +190,13 @@ $lightGreen: #b9e7e7;
         }
 
         h1 {
-          font-size: 42px;
+          font-size: 32px;
           color: #333;
         }
 
         p {
           text-align: justify;
-          line-height: 30px;
+          line-height: 16px;
         }
       }
       .menu {
