@@ -5,17 +5,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 
-
-
 const Single = () => {
   const [post, setPost] = useState({});
-
   const location = useLocation();
   const navigate = useNavigate();
-
   const postId = location.pathname.split("/")[2];
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,19 +23,19 @@ const Single = () => {
     fetchData();
   }, [postId]);
 
-  const handleDelete = async ()=>{
+  const handleDelete = async () => {
     try {
       await axios.delete(`/posts/${postId}`);
-      navigate("/")
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-  const getText = (html) =>{
-    const doc = new DOMParser().parseFromString(html, "text/html")
-    return doc.body.textContent
-  }
+  const getText = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent;
+  };
 
   return (
     <div className="single">
@@ -51,18 +45,16 @@ const Single = () => {
           <div className="info">
             <p>Posted {moment(post.date).fromNow()}</p>
           </div>
-        
-            <div className="edit">
-              <Link to={`/write?edit=2`} state={post}>
-                <img src={Edit} alt="" />
-              </Link>
-              <img onClick={handleDelete} src={Delete} alt="" />
-            </div>
-        
+          <div className="edit">
+            <Link to={`/write?edit=${postId}`} state={post}>
+              <img src={Edit} alt="" />
+            </Link>
+            <img onClick={handleDelete} src={Delete} alt="" />
+          </div>
         </div>
         <h1>{post.title}</h1>
-        {getText(post.desc)}  </div>
-     
+        {getText(post.desc)}
+      </div>
     </div>
   );
 };

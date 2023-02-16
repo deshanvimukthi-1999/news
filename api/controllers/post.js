@@ -103,32 +103,32 @@ export const deletePost = (req, res) => {
 export const updatePost = (req, res) => {
   const postId = req.params.id;
 
-  // Check if post exists
-  const selectQuery = "SELECT * FROM posts WHERE id = ?";
-  db.query(selectQuery, [postId], (selectErr, selectResult) => {
-    if (selectErr) {
-      return res.status(500).json(selectErr);
-    }
-    if (selectResult.length === 0) {
-      return res.status(404).json("Post not found");
+  const updateQuery =
+    "UPDATE posts SET `title`=?,`desc`=?,`img`=?,`cat`=? WHERE `id` = ?";
+  const values = [
+    req.body.title,
+    req.body.desc,
+    req.body.img,
+    req.body.cat,
+    postId
+  ];
+
+  db.query(updateQuery, values, (updateErr, updateResult) => {
+    if (updateErr) {
+      return res.status(500).json(updateErr);
     }
 
-    // Update post
-    const updateQuery =
-      "UPDATE posts SET `title`=?,`desc`=?,`img`=?,`cat`=? WHERE `id` = ?";
-    const values = [
-      req.body.title,
-      req.body.desc,
-      req.body.img,
-      req.body.cat,
-    ];
-
-    db.query(updateQuery, [...values, postId], (updateErr, updateResult) => {
-      if (updateErr) {
-        return res.status(500).json(updateErr);
+    // Get the updated post
+    const selectQuery = "SELECT * FROM posts WHERE id = ?";
+    db.query(selectQuery, [postId], (selectErr, selectResult) => {
+      if (selectErr) {
+        return res.status(500).json(selectErr);
       }
-      return res.json("Post has been updated.");
+      if (selectResult.length === 0) {
+        return res.status(404).json("Post not found");
+      }
+      const updatedPost = selectResult[0];
+      return res.json(updatedPost);
     });
   });
 };
-
